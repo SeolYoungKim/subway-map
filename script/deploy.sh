@@ -41,7 +41,7 @@ check_df;
 function pull() {
   echo -e ""
   echo -e ">> Pull Request"
-  git pull origin main || { echo -e "${txtred}Git pull 실패!${txtrst}"; exit 1; }
+  git pull origin main || { echo -e "[$(date)] Git pull 실패!"; exit 1; }
 }
 
 pull;
@@ -51,7 +51,7 @@ function build() {
   echo -e ""
   echo -e ">> Build Gradle"
   cd ..
-  ./gradlew clean build || { echo -e "${txtred}Gradle 빌드 실패!${txtrst}"; exit 1; }
+  ./gradlew clean build || { echo -e "[$(date)] Gradle 빌드 실패!"; exit 1; }
 }
 
 build;
@@ -67,10 +67,10 @@ function searchPidOfJava() {
 
 
   if [[ -z "$pid" ]]; then
-    echo -e "${txtred}❌ SubwayApplication이 실행 중이지 않습니다.${txtrst}"
+    echo -e "[$(date)] ❌ SubwayApplication이 실행 중이지 않습니다."
   fi
 
-  echo -e "${txtgrn}✅ SubwayApplication 실행 중 (PID: $pid)${txtrst}"
+  echo -e "[$(date)] ✅ SubwayApplication 실행 중 (PID: $pid)"
 }
 
 
@@ -79,10 +79,10 @@ searchPidOfJava;
 ## 프로세스를 종료하는 명령어
 function killJava() {
   echo -e ""
-  echo -e ">> ${txtpur}Kill Java Process (PID: $pid)${txtrst}"
+  echo -e ">> Kill Java Process (PID: $pid)"
 
   if [[ -z "$pid" ]]; then
-    echo -e "${txtred}❌ 종료할 프로세스가 없습니다.${txtrst}"
+    echo -e "[$(date)] ❌ 종료할 프로세스가 없습니다."
   else
     kill -15 "$pid"
   fi
@@ -91,11 +91,11 @@ function killJava() {
 
   # 종료 확인
   if ps -p "$pid" > /dev/null; then
-    echo -e "${txtylw}⚠️ 정상 종료되지 않아 강제 종료 실행 (kill -9)${txtrst}"
+    echo -e "${txtylw}⚠️ 정상 종료되지 않아 강제 종료 실행 (kill -9)"
     kill -9 "$pid"
   fi
 
-  echo -e "${txtgrn}✅ SubwayApplication 종료 완료.${txtrst}"
+  echo -e "[$(date)] ✅ SubwayApplication 종료 완료."
 }
 
 killJava;
@@ -103,7 +103,7 @@ killJava;
 ## 자바 프로세스 실행
 function runJavaProcess() {
   echo -e ""
-  echo -e ">> ${txtpur}Run Java Process${txtrst}"
+  echo -e ">> Run Java Process"
 
   java -jar -Dspring.profiles.active=${BRANCH} ~/subway-map/build/libs/*.jar
 }
